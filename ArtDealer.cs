@@ -194,7 +194,7 @@ namespace DeckDrawHW1
             PickACardMesage.Visible = true;
 
             //If we finished the last pattern
-            if (lastWon == 8)
+            if (lastWon == 9)
             {
                 finishedPatterns = true;
                 displayCongrats();
@@ -769,6 +769,9 @@ namespace DeckDrawHW1
                 case 7: //Skipping by 2, any suit
                     patternSkipByTwo(ranks, suits);
                     break;
+                case 8: //Adds to Eleven
+                    patternAddsToEleven(ranks, suits);  
+                    break;
                 default:
                     using (StreamWriter sw = File.AppendText(pathWon))
                     {
@@ -1024,6 +1027,51 @@ namespace DeckDrawHW1
             }
         }
 
+        //Purpose: Pattern 8
+        //Passed: Passed arrays for the values of the ranks and suits of the selected cards
+        //Author: Jeremy Zahrndt
+        private void patternAddsToEleven(string[] ranks, string[] suits)
+        {
+            int[] rankHolder = new int[4];
+            string message = "";
+
+            // Convert card rank strings to integers, considering Aces as 1
+            for (int i = 0; i < 4; i++)
+            {
+                rankHolder[i] = ConvertRankToIntegerForPattern9(ranks[i]);
+            }
+
+            // List all possible combinations of indices that sum up to 11
+            int[][] combinations = new int[][]
+            {
+                new int[] {0, 1, 2, 3}, // 1234
+                new int[] {0, 1, 2},    // 123
+                new int[] {1, 2, 3},    // 234
+                new int[] {0, 1, 3},    // 124
+                new int[] {0, 2, 3},    // 134
+                new int[] {0, 1},       // 12
+                new int[] {0, 2},       // 13
+                new int[] {0, 3},       // 14
+                new int[] {1, 2},       // 23
+                new int[] {1, 3},       // 24
+                new int[] {2, 3}        // 34
+            };
+
+            foreach (var combo in combinations)
+            {
+                int sum = combo.Sum(index => rankHolder[index]);
+                if (sum == 11)
+                {
+                    foreach (var index in combo)
+                    {
+                        cardMatch[index] = true;
+                    }
+
+                    MessageBox.Show($"The Art Dealer will buy: {string.Join(", ", combo.Select(index => ranks[index]))}", "Combination");
+                }
+            }
+        }
+
         //Purpose:
         //Passed:
         //Author: Jeremy Zahrndt
@@ -1035,6 +1083,27 @@ namespace DeckDrawHW1
                 case "K": return 13;
                 case "Q": return 12;
                 case "J": return 11;
+                case "10": return 10;
+                case "9": return 9;
+                case "8": return 8;
+                case "7": return 7;
+                case "6": return 6;
+                case "5": return 5;
+                case "4": return 4;
+                case "3": return 3;
+                case "2": return 2;
+                default: throw new ArgumentException("Invalid rank");
+            }
+        }
+
+        //Purpose:
+        //Passed:
+        //Author: Jeremy Zahrndt
+        private int ConvertRankToIntegerForPattern9(string rank)
+        {
+            switch (rank)
+            {
+                case "A": return 1;
                 case "10": return 10;
                 case "9": return 9;
                 case "8": return 8;
