@@ -156,7 +156,7 @@ namespace DeckDrawHW1
             StreamReader sr = new StreamReader(pathWon);
             lastWon = Int32.Parse(sr.ReadLine()); //Get lastWon from the file
             sr.Close();
-            if(lastWon < 0 || lastWon > 6) //If someone edited the file trying to break the program
+            if(lastWon < 0 || lastWon > 12) //If someone edited the file trying to break the program
             {
                 MessageBox.Show("Please do not edit LastWon.txt. Reseting to first pattern!", "Stop Cheating");
                 File.WriteAllText(pathWon, "0");
@@ -194,7 +194,7 @@ namespace DeckDrawHW1
             PickACardMesage.Visible = true;
 
             //If we finished the last pattern
-            if (lastWon == 6)
+            if (lastWon == 7)
             {
                 finishedPatterns = true;
                 displayCongrats();
@@ -763,6 +763,9 @@ namespace DeckDrawHW1
                 case 5: //Pick the highest rank cards
                     patternHighestRank(ranks, suits);
                     break;
+                case 6: //Rising run in same suit
+                    patternRisingRun(ranks, suits);
+                    break;
                 default:
                     using (StreamWriter sw = File.AppendText(pathWon))
                     {
@@ -926,6 +929,80 @@ namespace DeckDrawHW1
                 {
                     cardMatch[i] = false;
                 }
+            }
+        }
+
+        //Purpose: ... (add purpose)
+        //Passed: Passed arrays for the values of the ranks and suits of the selected cards
+        //Author: Jeremy Zahrndt
+        private void patternRisingRun(string[] ranks, string[] suits)
+        {
+            string suit = suits[0];
+            int[] rankHolder = new int[4];
+            bool ranksInAscendingOrder = true;
+            bool sameSuit = true;
+
+            //add all four ranks to array
+            for (int i = 0; i < 4; i++)
+            {
+                rankHolder[i] = ConvertRankToInteger(ranks[i]);
+            }
+
+            //check if ranks are in ascending order
+            for (int i = 0; i < 3; i++)
+            {
+                if (rankHolder[i] >= rankHolder[i + 1])
+                {
+                    ranksInAscendingOrder = false;
+                    break;
+                }
+            }
+
+            //check if all suits are the same
+            for (int i = 0; i < 4; i++)
+            {
+                if (suits[i] != suit)
+                {
+                    sameSuit = false;
+                    break;
+                }
+            }
+
+            //set all four cards if everything is true
+            for (int i = 0; i < 4; i++)
+            {
+                if (sameSuit && ranksInAscendingOrder)
+                {
+                    cardMatch[i] = true;
+                } else
+                {
+                    cardMatch[i] = false;                }
+            }
+        }
+
+        //Purpose:
+        //Passed: Passed arrays for the values of the ranks and suits of the selected cards
+        //Author: Jeremy Zahrndt
+
+
+        private int ConvertRankToInteger(string rank)
+        {
+            switch (rank)
+            {
+                case "A": return 14;
+                case "K": return 13;
+                case "Q": return 12;
+                case "J": return 11;
+                case "10": return 10;
+                case "9": return 9;
+                case "8": return 8;
+                case "7": return 7;
+                case "6": return 6;
+                case "5": return 5;
+                case "4": return 4;
+                case "3": return 3;
+                case "2": return 2;
+                default: throw new ArgumentException("Invalid rank");
             }
         }
 
