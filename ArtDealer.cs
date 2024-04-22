@@ -1114,20 +1114,79 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: Pattern 11 (add Purpose)
+        //Purpose: Sort of a Royal Flush (Pattern 11)
+        //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
         private void patternRoyalFlush(string[] ranks, string[] suits)
         {
+            string suit = suits[0];
+            bool sameSuit = true;
+            HashSet<string> royalRanks = new HashSet<string> { "A", "K", "Q", "J" };
 
+            //check if all suits are the same
+            for (int i = 0; i < 4; i++)
+            {
+                if (suits[i] != suit)
+                {
+                    sameSuit = false;
+                    break;
+                }
+            }
+
+            // Check for the presence of all royal flush ranks
+            foreach (var rank in ranks)
+            {
+                if (royalRanks.Contains(rank))
+                {
+                    royalRanks.Remove(rank);  // Remove found rank
+                }
+            }
+
+            //Check for Royal Flush
+            for (int i = 0; i < 4; i++)
+            {
+                if (sameSuit && royalRanks.Count == 0)
+                {
+                    cardMatch[i] = true;
+                }
+                else
+                {
+                    cardMatch[i] = false;
+                }
+            }
         }
 
-        //Purpose: Pattern 12 (add Purpose)
+        //Purpose: Ace and Eights (Pattern 12)
+        //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
         private void patternTwoBlackJackCombos(string[] ranks, string[] suits)
         {
+            bool hasJackClubs = false;
+            bool hasJackSpades = false;
+            int aceCount = 0;
 
+            //Count the number of occurrences of Aces and Eights
+            for (int i = 0; i < 4; i++)
+            {
+                if (ranks[i] == "A") aceCount++;
+                else if (ranks[i] == "J" && suits[i] == "C") hasJackClubs = true;
+                else if (ranks[i] == "J" && suits[i] == "S") hasJackSpades = true;
+            }
+
+            //Check for correct pattern (2 black jacks and any 2 aces)
+            for (int i = 0; i < 4; i++)
+            {
+                if (hasJackClubs && hasJackSpades && aceCount == 2)
+                {
+                    cardMatch[i] = true;
+                }
+                else
+                {
+                    cardMatch[i] = false;
+                }
+            }
         }
 
         //Purpose: (add Purpose)
