@@ -112,7 +112,7 @@ namespace DeckDrawHW1
 
         // Purpose: On Program Start (initial form load), prepares program for user
         // Author: Nicholas Hieb
-        // Editors: James Struble, Brett McBride, Matthew Brown
+        // Editors: James Struble, Brett McBride, Matthew Brown, Jeremy Zahrndt
         private void ArtDealer_Load(object sender, EventArgs e)
         {
             //Hides stop and reset buttons on initial start of program
@@ -304,7 +304,7 @@ namespace DeckDrawHW1
         }
         // Purpose: On Draw Click, confirms user selection. Appends card draw CardsDealt.txt
         // Author: Nicholas Hieb
-        // Editors: James Struble, Brett McBride, Matthew Brown
+        // Editors: James Struble, Brett McBride, Matthew Brown, Jeremy Zahrndt
         private void DrawButton_Click(object sender, EventArgs e)
         {
             
