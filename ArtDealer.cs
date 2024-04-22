@@ -194,7 +194,7 @@ namespace DeckDrawHW1
             PickACardMesage.Visible = true;
 
             //If we finished the last pattern
-            if (lastWon == 9)
+            if (lastWon == 12)
             {
                 finishedPatterns = true;
                 displayCongrats();
@@ -402,7 +402,7 @@ namespace DeckDrawHW1
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(Properties.Resources.tada);
                         player.Play();
 
-                        if (lastWon == 6)
+                        if (lastWon == 12)
                         {
                             finishedPatterns = true;
                             displayCongrats();
@@ -740,37 +740,46 @@ namespace DeckDrawHW1
         //Purpose: Function that determines which pattern to check drawn cards against.
         //         lastWon variable indicates what the current pattern is
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
-        //Author: Matthew Brown
+        //Author: Matthew Brown, Jeremy Zahrndt
         private void checkPattern(string[] ranks, string[] suits)
         {
             switch (lastWon) //this is pulled from LastWon.txt and is a integer between 0 and 5
             {
-                case 0: //Check if the Suits are all red
+                case 0: //Pattern 1: Check if the Suits are all red
                     patternAllRed(ranks, suits);
                     break;
-                case 1: //All CLubs Pattern
+                case 1: //Pattern 2: All CLubs Pattern
                     patternAllClubs(ranks, suits);
                     break;
-                case 2: //All Face Cards Pattern
+                case 2: //Pattern 3: All Face Cards Pattern
                     patternFaceCards(ranks, suits);
                     break;
-                case 3: //All cards 2 <-> 9
+                case 3: //Pattern 4: All cards 2 <-> 9
                     patternSingleDigits(ranks, suits);
                     break;
-                case 4: //Prime Numbers 2, 3, 5, 7
+                case 4: //Pattern 5: Prime Numbers 2, 3, 5, 7
                     patternAnyPrime(ranks, suits);
                     break;
-                case 5: //Pick the highest rank cards
+                case 5: //Pattern 6: Pick the highest rank cards
                     patternHighestRank(ranks, suits);
                     break;
-                case 6: //Rising run in same suit
+                case 6: //Pattern 7: Rising run in same suit
                     patternRisingRun(ranks, suits);
                     break;
-                case 7: //Skipping by 2, any suit
+                case 7: //Pattern 8: Skipping by 2, any suit
                     patternSkipByTwo(ranks, suits);
                     break;
-                case 8: //Adds to Eleven
+                case 8: //Pattern 9: Adds to Eleven
                     patternAddsToEleven(ranks, suits);  
+                    break;
+                case 9: //Pattern 10: Aces and Eights
+                    patternAcesAndEights(ranks, suits);
+                    break;
+                case 10: //Pattern 11: Sort of a Royal Flush
+                    patternRoyalFlush(ranks, suits);
+                    break;
+                case 11: //Pattern 12: Two Black Jack Combos
+                    patternTwoBlackJackCombos(ranks, suits);
                     break;
                 default:
                     using (StreamWriter sw = File.AppendText(pathWon))
@@ -938,7 +947,8 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: Pattern 7
+        //Purpose: Rising Run in Same Suit (Pattern 7)
+        //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
         private void patternRisingRun(string[] ranks, string[] suits)
@@ -986,7 +996,8 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: Pattern 8
+        //Purpose: Skipping by 2, Any Suit (Pattern 8)
+        //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
         private void patternSkipByTwo(string[] ranks, string[] suits)
@@ -1027,7 +1038,8 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: Pattern 8
+        //Purpose: Adds to Eleven (Pattern 9)
+        //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
         private void patternAddsToEleven(string[] ranks, string[] suits)
@@ -1072,8 +1084,54 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose:
-        //Passed:
+        //Purpose: Ace and Eights (Pattern 10)
+        //            - (add Purpose)
+        //Passed: Passed arrays for the values of the ranks and suits of the selected cards
+        //Author: Jeremy Zahrndt
+        private void patternAcesAndEights(string[] ranks, string[] suits)
+        {
+            int aceCount = 0;
+            int eightCount = 0;
+
+            //Count the number of occurrences of Aces and Eights
+            for (int i = 0; i < 4; i++)
+            {
+                if (ranks[i] == "A") aceCount++;
+                else if (ranks[i] == "8") eightCount++;
+            }
+
+            //Check for exactly two Aces and two Eights
+            for (int i = 0; i < 4; i++)
+            {
+                if (aceCount == 2 && eightCount == 2)
+                {
+                    cardMatch[i] = true;
+                }
+                else
+                {
+                    cardMatch[i] = false;
+                }
+            }
+        }
+
+        //Purpose: Pattern 11 (add Purpose)
+        //Passed: Passed arrays for the values of the ranks and suits of the selected cards
+        //Author: Jeremy Zahrndt
+        private void patternRoyalFlush(string[] ranks, string[] suits)
+        {
+
+        }
+
+        //Purpose: Pattern 12 (add Purpose)
+        //Passed: Passed arrays for the values of the ranks and suits of the selected cards
+        //Author: Jeremy Zahrndt
+        private void patternTwoBlackJackCombos(string[] ranks, string[] suits)
+        {
+
+        }
+
+        //Purpose: (add Purpose)
+        //Passed: Passed array for the values of the ranks of the selected cards
         //Author: Jeremy Zahrndt
         private int ConvertRankToInteger(string rank)
         {
@@ -1096,8 +1154,8 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose:
-        //Passed:
+        //Purpose: (add Purpose)
+        //Passed: Passed array for the values of the ranks of the selected cards
         //Author: Jeremy Zahrndt
         private int ConvertRankToIntegerForPattern9(string rank)
         {
