@@ -194,7 +194,7 @@ namespace DeckDrawHW1
             PickACardMesage.Visible = true;
 
             //If we finished the last pattern
-            if (lastWon == 7)
+            if (lastWon == 8)
             {
                 finishedPatterns = true;
                 displayCongrats();
@@ -766,6 +766,9 @@ namespace DeckDrawHW1
                 case 6: //Rising run in same suit
                     patternRisingRun(ranks, suits);
                     break;
+                case 7: //Skipping by 2, any suit
+                    patternSkipByTwo(ranks, suits);
+                    break;
                 default:
                     using (StreamWriter sw = File.AppendText(pathWon))
                     {
@@ -932,7 +935,7 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: ... (add purpose)
+        //Purpose: Pattern 7
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
         private void patternRisingRun(string[] ranks, string[] suits)
@@ -980,11 +983,50 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose:
+        //Purpose: Pattern 8
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
+        private void patternSkipByTwo(string[] ranks, string[] suits)
+        {
+            int[] rankHolder = new int[4];
+            bool isSkipByTwo = true;
 
+            //add all four ranks to array
+            for (int i = 0; i < 4; i++)
+            {
+                rankHolder[i] = ConvertRankToInteger(ranks[i]);
+            }
 
+            //sort rank array
+            Array.Sort(rankHolder);
+
+            //check for increments of 2
+            for (int i = 0; i < 3; i++) 
+            { 
+                if (rankHolder[i + 1] - rankHolder[i] != 2)
+                {
+                    isSkipByTwo = false;
+                    break;
+                }
+            }
+
+            //set all four cards if everything is true
+            for (int i = 0; i < 4; i++)
+            {
+                if (isSkipByTwo)
+                {
+                    cardMatch[i] = true;
+                }
+                else
+                {
+                    cardMatch[i] = false;
+                }
+            }
+        }
+
+        //Purpose:
+        //Passed:
+        //Author: Jeremy Zahrndt
         private int ConvertRankToInteger(string rank)
         {
             switch (rank)
