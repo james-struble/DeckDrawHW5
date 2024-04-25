@@ -1045,7 +1045,12 @@ namespace DeckDrawHW1
         private void patternAddsToEleven(string[] ranks, string[] suits)
         {
             int[] rankHolder = new int[4];
-            string message = "";
+
+            // Initialize cardMatch array to false
+            for (int i = 0; i < 4; i++)
+            {
+                cardMatch[i] = false;
+            }
 
             // Convert card rank strings to integers, considering Aces as 1
             for (int i = 0; i < 4; i++)
@@ -1157,7 +1162,7 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: Ace and Eights (Pattern 12)
+        //Purpose: (Pattern 12)
         //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
