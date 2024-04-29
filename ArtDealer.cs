@@ -1162,7 +1162,7 @@ namespace DeckDrawHW1
             }
         }
 
-        //Purpose: (Pattern 12)
+        //Purpose: Two Black Jack Combos (Pattern 12)
         //            - (add Purpose)
         //Passed: Passed arrays for the values of the ranks and suits of the selected cards
         //Author: Jeremy Zahrndt
@@ -1226,6 +1226,9 @@ namespace DeckDrawHW1
             switch (rank)
             {
                 case "A": return 1;
+                case "K": return 13;
+                case "Q": return 13;
+                case "J": return 13;
                 case "10": return 10;
                 case "9": return 9;
                 case "8": return 8;
